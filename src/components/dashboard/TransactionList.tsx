@@ -75,7 +75,7 @@ export function TransactionList() {
 
   return (
     <div className="space-y-4">
-      <div className="flex justify-between items-center">
+      <div className="flex justify-between items-center flex-col md:flex-row gap-4">
         <h2 className="text-2xl font-bold">Transações</h2>
         <div className="flex gap-2">
           <CategoryForm onSuccess={loadTransactions} />
