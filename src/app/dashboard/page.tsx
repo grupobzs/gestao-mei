@@ -1,16 +1,17 @@
 'use client';
 
 import Header from "@/components/Header";
+import { Summary } from "@/components/dashboard/Summary";
+import { TransactionList } from "@/components/dashboard/TransactionList";
 
 export default function DashboardPage() {
   return (
-    <main>
+    <main className="min-h-screen bg-background">
       <Header />
-      <div className="p-4 space-y-2 ">
-                <div className="max-w-7xl mx-auto">
-                    <span>Fluxo de caixa</span>
-                </div>
-            </div>
+      <div className="container mx-auto py-8 space-y-8">
+        <Summary />
+        <TransactionList />
+      </div>
     </main>
   );
 }
