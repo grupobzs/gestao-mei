@@ -1,39 +1,66 @@
-import { cn } from '@/lib/utils';
-import { AlertCircle, CheckCircle, Info, XCircle } from 'lucide-react';
+import * as React from "react"
+import { cva, type VariantProps } from "class-variance-authority"
 
-interface AlertProps extends React.HTMLAttributes<HTMLDivElement> {
-  variant?: 'success' | 'error' | 'info' | 'warning';
-}
+import { cn } from "@/lib/utils"
 
-export function Alert({ className, variant = 'info', ...props }: AlertProps) {
-  const variants = {
-    success: 'bg-green-50 text-green-800 border-green-200',
-    error: 'bg-red-50 text-red-800 border-red-200',
-    info: 'bg-blue-50 text-blue-800 border-blue-200',
-    warning: 'bg-yellow-50 text-yellow-800 border-yellow-200'
-  };
+const alertVariants = cva(
+  "relative w-full rounded-lg border px-4 py-3 text-sm grid has-[>svg]:grid-cols-[calc(var(--spacing)*4)_1fr] grid-cols-[0_1fr] has-[>svg]:gap-x-3 gap-y-0.5 items-start [&>svg]:size-4 [&>svg]:translate-y-0.5 [&>svg]:text-current",
+  {
+    variants: {
+      variant: {
+        default: "bg-card text-card-foreground",
+        destructive:
+          "text-destructive bg-card [&>svg]:text-current *:data-[slot=alert-description]:text-destructive/90",
+      },
+    },
+    defaultVariants: {
+      variant: "default",
+    },
+  }
+)
 
-  const icons = {
-    success: CheckCircle,
-    error: XCircle,
-    info: Info,
-    warning: AlertCircle
-  };
-
-  const Icon = icons[variant];
-
+function Alert({
+  className,
+  variant,
+  ...props
+}: React.ComponentProps<"div"> & VariantProps<typeof alertVariants>) {
   return (
     <div
+      data-slot="alert"
       role="alert"
+      className={cn(alertVariants({ variant }), className)}
+      {...props}
+    />
+  )
+}
+
+function AlertTitle({ className, ...props }: React.ComponentProps<"div">) {
+  return (
+    <div
+      data-slot="alert-title"
       className={cn(
-        'flex items-center p-4 rounded-md border',
-        variants[variant],
+        "col-start-2 line-clamp-1 min-h-4 font-medium tracking-tight",
         className
       )}
       {...props}
-    >
-      <Icon className="w-5 h-5 mr-3" />
-      <div className="flex-1">{props.children}</div>
-    </div>
-  );
-} 
+    />
+  )
+}
+
+function AlertDescription({
+  className,
+  ...props
+}: React.ComponentProps<"div">) {
+  return (
+    <div
+      data-slot="alert-description"
+      className={cn(
+        "text-muted-foreground col-start-2 grid justify-items-start gap-1 text-sm [&_p]:leading-relaxed",
+        className
+      )}
+      {...props}
+    />
+  )
+}
+
+export { Alert, AlertTitle, AlertDescription }

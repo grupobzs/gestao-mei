@@ -1,39 +1,53 @@
-import { cn } from '@/lib/utils';
-import { User } from 'lucide-react';
+"use client"
 
-interface AvatarProps extends React.HTMLAttributes<HTMLDivElement> {
-  src?: string;
-  alt?: string;
-  size?: 'sm' | 'md' | 'lg';
-}
+import * as React from "react"
+import * as AvatarPrimitive from "@radix-ui/react-avatar"
 
-export function Avatar({ className, src, alt, size = 'md', ...props }: AvatarProps) {
-  const sizes = {
-    sm: 'w-8 h-8',
-    md: 'w-10 h-10',
-    lg: 'w-12 h-12'
-  };
+import { cn } from "@/lib/utils"
 
+function Avatar({
+  className,
+  ...props
+}: React.ComponentProps<typeof AvatarPrimitive.Root>) {
   return (
-    <div
+    <AvatarPrimitive.Root
+      data-slot="avatar"
       className={cn(
-        'relative flex shrink-0 overflow-hidden rounded-full',
-        sizes[size],
+        "relative flex size-8 shrink-0 overflow-hidden rounded-full",
         className
       )}
       {...props}
-    >
-      {src ? (
-        <img
-          src={src}
-          alt={alt}
-          className="aspect-square h-full w-full"
-        />
-      ) : (
-        <div className="flex h-full w-full items-center justify-center bg-gray-100">
-          <User className="h-1/2 w-1/2 text-gray-500" />
-        </div>
+    />
+  )
+}
+
+function AvatarImage({
+  className,
+  ...props
+}: React.ComponentProps<typeof AvatarPrimitive.Image>) {
+  return (
+    <AvatarPrimitive.Image
+      data-slot="avatar-image"
+      className={cn("aspect-square size-full", className)}
+      {...props}
+    />
+  )
+}
+
+function AvatarFallback({
+  className,
+  ...props
+}: React.ComponentProps<typeof AvatarPrimitive.Fallback>) {
+  return (
+    <AvatarPrimitive.Fallback
+      data-slot="avatar-fallback"
+      className={cn(
+        "bg-muted flex size-full items-center justify-center rounded-full",
+        className
       )}
-    </div>
-  );
-} 
+      {...props}
+    />
+  )
+}
+
+export { Avatar, AvatarImage, AvatarFallback }

@@ -47,18 +47,17 @@ export default function LoginForm() {
   };
 
   return (
-    <div className="w-full max-w-md mx-auto p-6 bg-white rounded-lg shadow-sm border border-gray-200">
-      <h2 className="text-2xl font-bold mb-6 text-center text-gray-900">Login</h2>
+    <div className="w-full max-w-md mx-auto p-6 bg-card rounded-lg shadow-sm border border-border">
       
       {error && (
-        <div className="mb-4 p-3 bg-red-50 text-red-700 rounded-md border border-red-200">
+        <div className="mb-4 p-3 bg-destructive/10 text-destructive rounded-md border border-destructive/20">
           {error}
         </div>
       )}
       
       <form onSubmit={handleLogin}>
         <div className="mb-4">
-          <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
+          <label htmlFor="email" className="block text-sm font-medium text-card-foreground mb-1">
             Email
           </label>
           <input
@@ -66,13 +65,13 @@ export default function LoginForm() {
             type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-gray-900 placeholder-gray-400"
+            className="w-full px-3 py-2 border border-input rounded-md focus:outline-none focus:ring-2 focus:ring-ring focus:border-ring bg-background text-foreground placeholder:text-muted-foreground"
             required
           />
         </div>
         
         <div className="mb-6">
-          <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1">
+          <label htmlFor="password" className="block text-sm font-medium text-card-foreground mb-1">
             Senha
           </label>
           <input
@@ -80,7 +79,7 @@ export default function LoginForm() {
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-gray-900 placeholder-gray-400"
+            className="w-full px-3 py-2 border border-input rounded-md focus:outline-none focus:ring-2 focus:ring-ring focus:border-ring bg-background text-foreground placeholder:text-muted-foreground"
             required
           />
         </div>
@@ -88,11 +87,13 @@ export default function LoginForm() {
         <button
           type="submit"
           disabled={loading}
-          className="w-full bg-indigo-600 text-white py-2 px-4 rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+          className="w-full bg-primary text-primary-foreground py-2 px-4 rounded-md hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
         >
           {loading ? 'Entrando...' : 'Entrar'}
         </button>
       </form>
+
+      <a href="#" className='text-sm text-muted-foreground mt-4 block text-center hover:text-primary hover:underline hover:underline-offset-4'>Não tem conta? Clique aqui!</a>
     </div>
   );
 } 

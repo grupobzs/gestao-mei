@@ -1,59 +1,48 @@
-import { cn } from '@/lib/utils';
-import { useEffect, useRef, useState } from 'react';
+"use client"
 
-interface PopoverProps extends React.HTMLAttributes<HTMLDivElement> {
-  trigger: React.ReactNode;
-  content: React.ReactNode;
-  position?: 'top' | 'bottom' | 'left' | 'right';
+import * as React from "react"
+import * as PopoverPrimitive from "@radix-ui/react-popover"
+
+import { cn } from "@/lib/utils"
+
+function Popover({
+  ...props
+}: React.ComponentProps<typeof PopoverPrimitive.Root>) {
+  return <PopoverPrimitive.Root data-slot="popover" {...props} />
 }
 
-export function Popover({ className, trigger, content, position = 'bottom', ...props }: PopoverProps) {
-  const [isOpen, setIsOpen] = useState(false);
-  const triggerRef = useRef<HTMLDivElement>(null);
-  const popoverRef = useRef<HTMLDivElement>(null);
+function PopoverTrigger({
+  ...props
+}: React.ComponentProps<typeof PopoverPrimitive.Trigger>) {
+  return <PopoverPrimitive.Trigger data-slot="popover-trigger" {...props} />
+}
 
-  useEffect(() => {
-    function handleClickOutside(event: MouseEvent) {
-      if (
-        popoverRef.current &&
-        !popoverRef.current.contains(event.target as Node) &&
-        triggerRef.current &&
-        !triggerRef.current.contains(event.target as Node)
-      ) {
-        setIsOpen(false);
-      }
-    }
-
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, []);
-
-  const positions = {
-    top: 'bottom-full left-1/2 -translate-x-1/2 -translate-y-2',
-    bottom: 'top-full left-1/2 -translate-x-1/2 translate-y-2',
-    left: 'right-full top-1/2 -translate-y-1/2 -translate-x-2',
-    right: 'left-full top-1/2 -translate-y-1/2 translate-x-2'
-  };
-
+function PopoverContent({
+  className,
+  align = "center",
+  sideOffset = 4,
+  ...props
+}: React.ComponentProps<typeof PopoverPrimitive.Content>) {
   return (
-    <div className="relative inline-block" {...props}>
-      <div ref={triggerRef} onClick={() => setIsOpen(!isOpen)}>
-        {trigger}
-      </div>
-      {isOpen && (
-        <div
-          ref={popoverRef}
-          className={cn(
-            'absolute z-50',
-            positions[position],
-            className
-          )}
-        >
-          <div className="rounded-lg border border-gray-200 bg-white p-4 shadow-lg">
-            {content}
-          </div>
-        </div>
-      )}
-    </div>
-  );
-} 
+    <PopoverPrimitive.Portal>
+      <PopoverPrimitive.Content
+        data-slot="popover-content"
+        align={align}
+        sideOffset={sideOffset}
+        className={cn(
+          "bg-popover text-popover-foreground data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 z-50 w-72 origin-(--radix-popover-content-transform-origin) rounded-md border p-4 shadow-md outline-hidden",
+          className
+        )}
+        {...props}
+      />
+    </PopoverPrimitive.Portal>
+  )
+}
+
+function PopoverAnchor({
+  ...props
+}: React.ComponentProps<typeof PopoverPrimitive.Anchor>) {
+  return <PopoverPrimitive.Anchor data-slot="popover-anchor" {...props} />
+}
+
+export { Popover, PopoverTrigger, PopoverContent, PopoverAnchor }

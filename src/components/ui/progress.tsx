@@ -1,36 +1,31 @@
-import { cn } from '@/lib/utils';
+"use client"
 
-interface ProgressProps extends React.HTMLAttributes<HTMLDivElement> {
-  value: number;
-  max?: number;
-  variant?: 'default' | 'success' | 'error' | 'warning';
-}
+import * as React from "react"
+import * as ProgressPrimitive from "@radix-ui/react-progress"
 
-export function Progress({ className, value, max = 100, variant = 'default', ...props }: ProgressProps) {
-  const percentage = (value / max) * 100;
+import { cn } from "@/lib/utils"
 
-  const variants = {
-    default: 'bg-blue-600',
-    success: 'bg-green-600',
-    error: 'bg-red-600',
-    warning: 'bg-yellow-600'
-  };
-
+function Progress({
+  className,
+  value,
+  ...props
+}: React.ComponentProps<typeof ProgressPrimitive.Root>) {
   return (
-    <div
+    <ProgressPrimitive.Root
+      data-slot="progress"
       className={cn(
-        'relative h-2 w-full overflow-hidden rounded-full bg-gray-200',
+        "bg-primary/20 relative h-2 w-full overflow-hidden rounded-full",
         className
       )}
       {...props}
     >
-      <div
-        className={cn(
-          'h-full transition-all duration-300',
-          variants[variant]
-        )}
-        style={{ width: `${percentage}%` }}
+      <ProgressPrimitive.Indicator
+        data-slot="progress-indicator"
+        className="bg-primary h-full w-full flex-1 transition-all"
+        style={{ transform: `translateX(-${100 - (value || 0)}%)` }}
       />
-    </div>
-  );
-} 
+    </ProgressPrimitive.Root>
+  )
+}
+
+export { Progress }
